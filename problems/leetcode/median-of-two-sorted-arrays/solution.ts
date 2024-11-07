@@ -1,20 +1,22 @@
 function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
-  const isEven = !((nums1.length + nums2.length) % 2);
-  const targetIndex =
-    Math.ceil((nums1.length + nums2.length) / 2) + Number(isEven);
-  let pointer1 = nums1.shift();
-  let pointer2 = nums2.shift();
-  let result = [];
+  const totalLength = nums1.length + nums2.length;
+  const isEven = totalLength % 2 === 0;
+  const targetIndex = Math.floor(totalLength / 2);
 
-  while (result.length < targetIndex) {
-    if (pointer2 == null || pointer1! < pointer2) {
-      result.push(pointer1!);
-      pointer1 = nums1.shift();
-      continue;
+  let p1 = 0,
+    p2 = 0;
+  let prev = 0,
+    curr = 0;
+
+  for (let k = 0; k <= targetIndex; k++) {
+    prev = curr;
+
+    if (p1 < nums1.length && (p2 >= nums2.length || nums1[p1] <= nums2[p2])) {
+      curr = nums1[p1++];
+    } else {
+      curr = nums2[p2++];
     }
-    result.push(pointer2!);
-    pointer2 = nums2.shift();
   }
 
-  return isEven ? (result.pop()! + result.pop()!) / 2 : result.pop()!;
+  return isEven ? (prev + curr) / 2 : curr;
 }
