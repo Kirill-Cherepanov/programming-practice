@@ -126,8 +126,15 @@ export default class LinkedList<T> {
     this.insert(0, value);
   }
 
+  // ! Somewhat inefficient here as it scans the list twice at this.length and this.atNode
   public remove(position: number): void {
-    throw new Error('Not implemented');
+    if (position === 0 || (position < 0 && this.length === -position)) {
+      const node = this.headNode?.next ?? null;
+      this.headNode = node;
+    } else {
+      const prev = this.atNode(position - 1);
+      prev.next = prev.next?.next ?? null;
+    }
   }
 
   public toArray(): T[] {
