@@ -1,7 +1,7 @@
 import ListNode from './node';
 
 export default class LinkedList<T> {
-  public head: ListNode<T> | null;
+  private headNode: ListNode<T> | null;
 
   private static errors = {
     getOutOfBounds: (length: number, position: number) =>
@@ -11,39 +11,49 @@ export default class LinkedList<T> {
     getIncorrectInput: (info?: unknown) => new Error(`Incorrect input${info}`),
   };
 
-  constructor(head: ListNode<T> | null = null) {
-    this.head = head;
+  constructor(headValue: T | null = null) {
+    this.headNode = headValue != null ? new ListNode(headValue) : null;
   }
 
-  get tail(): ListNode<T> | null {
-    let next = this.head;
+  private get tailNode(): ListNode<T> | null {
+    let next = this.headNode;
     while (next?.next) next = next.next;
     return next ?? null;
+  }
+
+  get tail(): T | null {
+    return this.tailNode?.value ?? null;
+  }
+
+  get head(): T | null {
+    return this.headNode?.value ?? null;
   }
 
   get length(): number {
     throw new Error('Not implemented');
   }
 
-  public prepend(head: ListNode<T>): void {
-    if (this.head) head.next = this.head;
-    this.head = head;
+  public prepend(head: T): void {
+    const headNode = new ListNode(head);
+    if (this.headNode) headNode.next = this.headNode;
+    this.headNode = headNode;
   }
 
-  public append(next: ListNode<T>): void {
-    if (!this.head) this.head = next;
-    else this.tail!.next = next;
+  public append(next: T): void {
+    const nextNode = new ListNode(next);
+    if (!this.headNode) this.headNode = nextNode;
+    else this.tailNode!.next = nextNode;
   }
 
-  public get(position: number): ListNode<T> {
+  public get(position: number): T {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
         ` negative position argument position=${position}`
       );
     }
-    if (!this.head) throw LinkedList.errors.getOutOfBounds(0, position);
+    if (!this.headNode) throw LinkedList.errors.getOutOfBounds(0, position);
 
-    let next = this.head;
+    let next = this.headNode;
     for (let i = 0; i !== position; i++) {
       if (!next.next) {
         throw LinkedList.errors.getOutOfBounds(i + 1, position);
@@ -51,48 +61,48 @@ export default class LinkedList<T> {
       next = next.next;
     }
 
-    return next;
+    return next.value;
   }
 
-  public getFromEnd(position: number): ListNode<T> {
+  public getFromEnd(position: number): T {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
         ` negative position argument position=${position}`
       );
     }
-    if (!this.head) throw LinkedList.errors.getOutOfBounds(0, position);
+    if (!this.headNode) throw LinkedList.errors.getOutOfBounds(0, position);
 
     const arr = [];
 
     let length = 1;
-    for (let next: ListNode<T> | null = this.head; next; next = next.next) {
+    for (let next: ListNode<T> | null = this.headNode; next; next = next.next) {
       arr.push(next);
       length++;
     }
 
     const result = arr.at(position);
     if (!result) throw LinkedList.errors.getOutOfBounds(length, position);
-    return result;
+    return result.value;
   }
 
-  public at(position: number): ListNode<T> {
+  public at(position: number): T {
     if (position >= 0) return this.get(position);
     else return this.getFromEnd(-position);
   }
 
   public clear(): void {
-    this.head = null;
+    this.headNode = null;
   }
 
   public reverse(): void {
     throw new Error('Not implemented');
   }
 
-  public set(position: number, value: ListNode<T>): void {
+  public set(position: number, value: T): void {
     throw new Error('Not implemented');
   }
 
-  public insert(position: number, value: ListNode<T>): void {
+  public insert(position: number, value: T): void {
     throw new Error('Not implemented');
   }
 
