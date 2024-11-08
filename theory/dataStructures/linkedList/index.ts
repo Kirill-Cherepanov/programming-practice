@@ -33,18 +33,6 @@ export default class LinkedList<T> {
     throw new Error('Not implemented');
   }
 
-  public prepend(head: T): void {
-    const headNode = new ListNode(head);
-    if (this.headNode) headNode.next = this.headNode;
-    this.headNode = headNode;
-  }
-
-  public append(next: T): void {
-    const nextNode = new ListNode(next);
-    if (!this.headNode) this.headNode = nextNode;
-    else this.tailNode!.next = nextNode;
-  }
-
   private getNode(position: number): ListNode<T> {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
@@ -116,7 +104,24 @@ export default class LinkedList<T> {
   }
 
   public insert(position: number, value: T): void {
-    throw new Error('Not implemented');
+    const node = new ListNode(value);
+
+    if (position === 0) {
+      node.next = this.headNode;
+      this.headNode = node;
+    } else {
+      const prev = this.atNode(position - Number(position > 0));
+      node.next = prev.next;
+      prev.next = node;
+    }
+  }
+
+  public append(value: T): void {
+    this.insert(-1, value);
+  }
+
+  public prepend(value: T): void {
+    this.insert(0, value);
   }
 
   public remove(position: number): void {
