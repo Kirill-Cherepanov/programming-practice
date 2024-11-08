@@ -8,7 +8,7 @@ export default class LinkedList<T> {
       new Error(
         `The linked list is of length: ${length}. Tried to get a node at position ${position}.`
       ),
-    getIncorrectInput: () => new Error('Incorrect input'),
+    getIncorrectInput: (info?: unknown) => new Error(`Incorrect input${info}`),
   };
 
   constructor(head: ListNode<T> | null = null) {
@@ -19,6 +19,10 @@ export default class LinkedList<T> {
     let next = this.head;
     while (next?.next) next = next.next;
     return next ?? null;
+  }
+
+  get length(): number {
+    throw new Error('Not implemented');
   }
 
   public prepend(head: ListNode<T>): void {
@@ -32,7 +36,11 @@ export default class LinkedList<T> {
   }
 
   public get(position: number): ListNode<T> {
-    if (position < 0) throw LinkedList.errors.getIncorrectInput();
+    if (position < 0) {
+      throw LinkedList.errors.getIncorrectInput(
+        ` negative position argument position=${position}`
+      );
+    }
     if (!this.head) throw LinkedList.errors.getOutOfBounds(0, position);
 
     let next = this.head;
@@ -47,7 +55,11 @@ export default class LinkedList<T> {
   }
 
   public getFromEnd(position: number): ListNode<T> {
-    if (position < 0) throw LinkedList.errors.getIncorrectInput();
+    if (position < 0) {
+      throw LinkedList.errors.getIncorrectInput(
+        ` negative position argument position=${position}`
+      );
+    }
     if (!this.head) throw LinkedList.errors.getOutOfBounds(0, position);
 
     const arr = [];
@@ -66,5 +78,29 @@ export default class LinkedList<T> {
   public at(position: number): ListNode<T> {
     if (position >= 0) return this.get(position);
     else return this.getFromEnd(-position);
+  }
+
+  public clear(): void {
+    throw new Error('Not implemented');
+  }
+
+  public reverse(): void {
+    throw new Error('Not implemented');
+  }
+
+  public set(position: number, value: ListNode<T>): void {
+    throw new Error('Not implemented');
+  }
+
+  public insert(position: number, value: ListNode<T>): void {
+    throw new Error('Not implemented');
+  }
+
+  public remove(position: number): void {
+    throw new Error('Not implemented');
+  }
+
+  public toArray(): T[] {
+    throw new Error('Not implemented');
   }
 }
