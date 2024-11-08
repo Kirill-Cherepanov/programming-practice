@@ -81,7 +81,7 @@ export default class LinkedList<T> {
   }
 
   public clear(): void {
-    throw new Error('Not implemented');
+    this.head = null;
   }
 
   public reverse(): void {
