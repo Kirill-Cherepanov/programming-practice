@@ -188,4 +188,43 @@ export default class LinkedList<T> {
   public forEach(callback: (value: T, index: number) => void): void {
     this.iterate((node, index) => callback(node.value, index));
   }
+
+  public map(callback: (value: T, index: number) => T): void {
+    this.iterate((node, index) => {
+      node.value = callback(node.value, index);
+    });
+  }
+
+  public filter(callback: (value: T, index: number) => boolean): void {
+    this.iterate((node, index, prev) => this.removeNode(prev));
+  }
+
+  public find(callback: (value: T, index: number) => boolean): T | undefined {
+    let index = 0;
+
+    for (let node = this.headNode; node; node = node?.next ?? null) {
+      if (callback(node.value, index)) return node.value;
+    }
+  }
+
+  public some(callback: (value: T, index: number) => boolean): boolean {
+    return !!this.find(callback);
+  }
+
+  public every(callback: (value: T, index: number) => boolean): boolean {
+    return !this.find((value, index) => !callback(value, index));
+  }
+
+  public reduce(
+    callback: (accumulator: T, value: T, index: number) => T,
+    initialValue: T
+  ): T {
+    let accumulator = initialValue;
+
+    this.forEach((value, index) => {
+      accumulator = callback(accumulator, value, index);
+    });
+
+    return accumulator;
+  }
 }
