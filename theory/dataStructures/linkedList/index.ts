@@ -69,12 +69,14 @@ export default class LinkedList<T> {
     let length = 1;
     for (let next: ListNode<T> | null = this.headNode; next; next = next.next) {
       arr.push(next);
+      if (arr.length === position + 1) arr.shift();
       length++;
     }
 
-    const result = arr.at(position);
-    if (!result) throw LinkedList.errors.getOutOfBounds(length, position);
-    return result;
+    if (arr.length !== position) {
+      throw LinkedList.errors.getOutOfBounds(length, position);
+    }
+    return arr[0];
   }
 
   public getFromEnd(position: number): T {
