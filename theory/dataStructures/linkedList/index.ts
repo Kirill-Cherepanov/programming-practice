@@ -133,15 +133,17 @@ export default class LinkedList<T> {
     this.insert(0, value);
   }
 
+  private removeNode(prev?: ListNode<T> | null): void {
+    if (!prev) this.headNode = this.headNode?.next ?? null;
+    else prev.next = prev.next?.next ?? null;
+  }
+
   // ! Somewhat inefficient here as it scans the list twice at this.length and this.atNode
   public remove(position: number): void {
-    if (position === 0 || (position < 0 && this.length === -position)) {
-      const node = this.headNode?.next ?? null;
-      this.headNode = node;
-    } else {
-      const prev = this.atNode(position - 1);
-      prev.next = prev.next?.next ?? null;
-    }
+    const isFirst =
+      position === 0 || (position < 0 && this.length === -position);
+    const prev = isFirst ? null : this.atNode(position - 1);
+    this.removeNode(prev);
   }
 
   public toArray(): T[] {
