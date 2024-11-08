@@ -45,7 +45,7 @@ export default class LinkedList<T> {
     else this.tailNode!.next = nextNode;
   }
 
-  public get(position: number): T {
+  private getNode(position: number): ListNode<T> {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
         ` negative position argument position=${position}`
@@ -61,10 +61,14 @@ export default class LinkedList<T> {
       next = next.next;
     }
 
-    return next.value;
+    return next;
   }
 
-  public getFromEnd(position: number): T {
+  public get(position: number): T {
+    return this.getNode(position).value;
+  }
+
+  private getNodeFromEnd(position: number): ListNode<T> {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
         ` negative position argument position=${position}`
@@ -82,12 +86,20 @@ export default class LinkedList<T> {
 
     const result = arr.at(position);
     if (!result) throw LinkedList.errors.getOutOfBounds(length, position);
-    return result.value;
+    return result;
+  }
+
+  public getFromEnd(position: number): T {
+    return this.getNodeFromEnd(position).value;
+  }
+
+  private atNode(position: number): ListNode<T> {
+    if (position >= 0) return this.getNode(position);
+    else return this.getNodeFromEnd(-position);
   }
 
   public at(position: number): T {
-    if (position >= 0) return this.get(position);
-    else return this.getFromEnd(-position);
+    return this.atNode(position).value;
   }
 
   public clear(): void {
@@ -99,7 +111,8 @@ export default class LinkedList<T> {
   }
 
   public set(position: number, value: T): void {
-    throw new Error('Not implemented');
+    const node = this.atNode(position);
+    node.value = value;
   }
 
   public insert(position: number, value: T): void {
