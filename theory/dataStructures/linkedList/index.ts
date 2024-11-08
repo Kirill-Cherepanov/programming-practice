@@ -45,4 +45,26 @@ export default class LinkedList<T> {
 
     return next;
   }
+
+  public getFromEnd(position: number): ListNode<T> {
+    if (position < 0) throw LinkedList.errors.getIncorrectInput();
+    if (!this.head) throw LinkedList.errors.getOutOfBounds(0, position);
+
+    const arr = [];
+
+    let length = 1;
+    for (let next: ListNode<T> | null = this.head; next; next = next.next) {
+      arr.push(next);
+      length++;
+    }
+
+    const result = arr.at(position);
+    if (!result) throw LinkedList.errors.getOutOfBounds(length, position);
+    return result;
+  }
+
+  public at(position: number): ListNode<T> {
+    if (position >= 0) return this.get(position);
+    else return this.getFromEnd(-position);
+  }
 }
