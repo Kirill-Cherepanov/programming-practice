@@ -97,7 +97,14 @@ export default class LinkedList<T> {
   }
 
   public reverse(): void {
-    throw new Error('Not implemented');
+    let prev: ListNode<T> | null = null;
+    let curr = this.headNode;
+
+    while (curr) {
+      curr.next = prev;
+      prev = curr;
+      curr = curr.next;
+    }
   }
 
   public set(position: number, value: T): void {
