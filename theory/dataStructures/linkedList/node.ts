@@ -6,4 +6,8 @@ export default class ListNode<T> {
     this.value = value;
     this.next = next;
   }
+
+  public toString(): string {
+    return `${this.value}`;
+  }
 }
