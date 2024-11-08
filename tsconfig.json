@@ -13,6 +13,6 @@
 
     "outDir": "./build"
   },
-  "include": ["algorithms", "problems"],
+  "include": ["theory", "problems"],
   "exclude": ["node_modules", "build/**/*"]
 }
