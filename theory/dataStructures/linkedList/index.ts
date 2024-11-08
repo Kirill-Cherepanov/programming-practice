@@ -227,4 +227,8 @@ export default class LinkedList<T> {
 
     return accumulator;
   }
+
+  public toString(): string {
+    return this.toArray().join(', ');
+  }
 }
