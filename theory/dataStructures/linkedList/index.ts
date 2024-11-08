@@ -111,6 +111,12 @@ export default class LinkedList<T> {
   }
 
   public toArray(): T[] {
-    throw new Error('Not implemented');
+    const arr = [] as T[];
+
+    for (let next = this.headNode; next; next = next.next) {
+      arr.push(next.value);
+    }
+
+    return arr;
   }
 }
