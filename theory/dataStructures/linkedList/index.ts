@@ -173,13 +173,17 @@ export default class LinkedList<T> {
   }
 
   private iterate(
-    callback: (node: ListNode<T>, index: number, prev?: ListNode<T>) => void
+    callback: (
+      node: ListNode<T>,
+      index: number,
+      prev?: ListNode<T> | null
+    ) => void
   ): void {
     let index = 0;
     let prev: ListNode<T> | null = null;
 
     for (let node = this.headNode; node; node = node?.next ?? null) {
-      callback(node, index);
+      callback(node, index, prev);
       index++;
       prev = node;
     }
