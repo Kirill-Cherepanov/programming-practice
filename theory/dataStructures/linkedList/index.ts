@@ -155,4 +155,37 @@ export default class LinkedList<T> {
 
     return arr;
   }
+
+  [Symbol.iterator]() {
+    let next = this.headNode;
+
+    return {
+      next() {
+        if (next) {
+          const value = next.value;
+          next = next.next;
+          return { value, done: false };
+        } else {
+          return { done: true };
+        }
+      },
+    };
+  }
+
+  private iterate(
+    callback: (node: ListNode<T>, index: number, prev?: ListNode<T>) => void
+  ): void {
+    let index = 0;
+    let prev: ListNode<T> | null = null;
+
+    for (let node = this.headNode; node; node = node?.next ?? null) {
+      callback(node, index);
+      index++;
+      prev = node;
+    }
+  }
+
+  public forEach(callback: (value: T, index: number) => void): void {
+    this.iterate((node, index) => callback(node.value, index));
+  }
 }
