@@ -85,7 +85,7 @@ export default class LinkedList<T> {
     return this.getNode(position).value;
   }
 
-  // Time: O(n); Space: O(position)
+  // Time: O(n); Space: O(1)
   private getNodeFromEnd(position: number): ListNode<T> {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
@@ -94,19 +94,13 @@ export default class LinkedList<T> {
     }
     if (!this.headNode) throw LinkedList.errors.getOutOfBounds(0, position);
 
-    const arr: ListNode<T>[] = [];
+    let target: ListNode<T> | null = null;
+    this.iterate((node, index) => {
+      if (index > position) target = target ? target.next : this.headNode;
+    });
 
-    let length = 1;
-    for (let next: ListNode<T> | null = this.headNode; next; next = next.next) {
-      arr.push(next);
-      if (arr.length === position + 1) arr.shift();
-      length++;
-    }
-
-    if (arr.length !== position) {
-      throw LinkedList.errors.getOutOfBounds(length, position);
-    }
-    return arr[0];
+    if (!target) throw LinkedList.errors.getOutOfBounds(length, position);
+    return target;
   }
 
   // Same as getNodeFromEnd
@@ -115,7 +109,7 @@ export default class LinkedList<T> {
   }
 
   // position >= 0 : Time: O(position); Space: O(1)
-  // position < 0 : Time: O(n); Space: O(position)
+  // position < 0 : Time: O(n); Space: O(1)
   private atNode(position: number): ListNode<T> {
     if (position >= 0) return this.getNode(position);
     else return this.getNodeFromEnd(-position);
