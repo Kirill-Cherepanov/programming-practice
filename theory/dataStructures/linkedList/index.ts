@@ -30,7 +30,9 @@ export default class LinkedList<T> {
   }
 
   get length(): number {
-    throw new Error('Not implemented');
+    let length = 0;
+    for (let next = this.headNode; next; next = next.next) length++;
+    return length;
   }
 
   private getNode(position: number): ListNode<T> {
@@ -64,7 +66,7 @@ export default class LinkedList<T> {
     }
     if (!this.headNode) throw LinkedList.errors.getOutOfBounds(0, position);
 
-    const arr = [];
+    const arr: ListNode<T>[] = [];
 
     let length = 1;
     for (let next: ListNode<T> | null = this.headNode; next; next = next.next) {
