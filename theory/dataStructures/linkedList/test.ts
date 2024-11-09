@@ -64,4 +64,47 @@ describe('LinkedList', () => {
       );
     });
   });
+
+  describe('insert', () => {
+    it('should insert a node at a specified position', () => {
+      list.insert(0, 1);
+      list.insert(0, 2);
+      list.insert(2, 3);
+      list.insert(1, 4);
+      expect(list.toArray()).toEqual([2, 4, 1, 3]);
+    });
+
+    it('should insert a node at a negative position', () => {
+      list.insert(-1, 1);
+      list.insert(-2, 2);
+      list.insert(-1, 3);
+      expect(list.toArray()).toEqual([2, 1, 3]);
+    });
+
+    it('should throw an error if the position is out of bounds', () => {
+      list.insert(0, 1);
+      expect(() => list.insert(4, 2)).toThrow(
+        LinkedList['errors'].getOutOfBounds(1, 3)
+      );
+      expect(() => list.insert(-3, 3)).toThrow(
+        LinkedList['errors'].getOutOfBounds(1, -3)
+      );
+    });
+  });
+
+  describe('append', () => {
+    it('should append nodes to the end of the list', () => {
+      list.append(1);
+      list.append(2);
+      expect(list.toArray()).toEqual([1, 2]);
+    });
+  });
+
+  describe('prepend', () => {
+    it('should prepend nodes to the start of the list', () => {
+      list.prepend(1);
+      list.prepend(2);
+      expect(list.toArray()).toEqual([2, 1]);
+    });
+  });
 });
