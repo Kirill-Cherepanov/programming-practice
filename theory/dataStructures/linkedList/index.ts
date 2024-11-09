@@ -15,6 +15,14 @@ export default class LinkedList<T> {
     this.headNode = headValue != null ? new ListNode(headValue) : null;
   }
 
+  public static fromArray<T>(arr: T[]): LinkedList<T> {
+    const list = new LinkedList<T>(arr[0] ?? null);
+    for (let i = arr.length - 1; i >= 0; i--) {
+      list.prepend(arr[i]);
+    }
+    return list;
+  }
+
   private get tailNode(): ListNode<T> | null {
     let next = this.headNode;
     while (next?.next) next = next.next;
