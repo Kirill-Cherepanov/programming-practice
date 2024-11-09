@@ -105,7 +105,8 @@ describe('LinkedList', () => {
     it('should prepend nodes to the start of the list', () => {
       list.prepend(1);
       list.prepend(2);
-      expect(list.toArray()).toEqual([2, 1]);
+      list.prepend(3);
+      expect(list.toArray()).toEqual([3, 2, 1]);
     });
   });
 
@@ -204,6 +205,28 @@ describe('LinkedList', () => {
       const values: number[] = [];
       list.forEach((x) => values.push(x));
       expect(values).toEqual([]);
+    });
+  });
+
+  describe('every and some', () => {
+    beforeEach(() => {
+      list = LinkedList.fromArray([1, 2, 3, 4]);
+    });
+
+    it('should return true if every element in the list satisfies the predicate', () => {
+      expect(list.every((x) => x > 0)).toBe(true);
+    });
+
+    it("should return false if some element in the list doesn't satisfy the predicate", () => {
+      expect(list.every((x) => x < 0)).toBe(false);
+    });
+
+    it('should return true if some element in the list satisfies the predicate', () => {
+      expect(list.some((x) => x > 3)).toBe(true);
+    });
+
+    it('should return false if no elements in the list satisfy the predicate', () => {
+      expect(list.some((x) => x < 0)).toBe(false);
     });
   });
 });
