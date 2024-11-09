@@ -194,13 +194,9 @@ export default class LinkedList<T> {
 
     return {
       next() {
-        if (next) {
-          const value = next.value;
-          next = next.next;
-          return { value, done: false };
-        } else {
-          return { done: true };
-        }
+        const value = next?.value ?? null;
+        next = next?.next ?? null;
+        return { value, done: !!next?.next };
       },
     };
   }
@@ -235,8 +231,15 @@ export default class LinkedList<T> {
     });
   }
 
+  // Time: O(n); Space: O(n)
   public filter(callback: (value: T, index: number) => boolean): void {
-    throw new Error('Not implemented');
+    const toDelete = new LinkedList<ListNode<T> | null>();
+
+    this.iterate((node, index, prev) => {
+      if (!callback(node.value, index)) toDelete.prepend(prev);
+    });
+
+    for (let node of toDelete) this.removeNode(node);
   }
 
   // Time: O(n); Space: O(1)
