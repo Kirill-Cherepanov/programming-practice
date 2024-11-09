@@ -243,4 +243,11 @@ describe('LinkedList', () => {
       expect(list.find((x) => x > 5)).toBeUndefined();
     });
   });
+
+  describe('toString', () => {
+    it('should return a string representation of the linked list', () => {
+      list = LinkedList.fromArray([1, 2, 3, 4]);
+      expect(list.toString()).toBe('1 -> 2 -> 3 -> 4');
+    });
+  });
 });

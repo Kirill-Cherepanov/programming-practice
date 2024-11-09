@@ -185,8 +185,8 @@ export default class LinkedList<T> {
   // Time: O(n); Space: O(1)
   public toString(): string {
     let string = '';
-    for (let value of this) string += `${value},`;
-    return string.slice(0, -1);
+    for (let value of this) string += `${value} -> `;
+    return string.slice(0, -4);
   }
 
   // Time: O(n); Space: O(1)
