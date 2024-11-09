@@ -229,4 +229,18 @@ describe('LinkedList', () => {
       expect(list.some((x) => x < 0)).toBe(false);
     });
   });
+
+  describe('find', () => {
+    beforeEach(() => {
+      list = LinkedList.fromArray([1, 2, 3, 4]);
+    });
+
+    it('should return the first element that satisfies the predicate', () => {
+      expect(list.find((x) => x > 2)).toBe(3);
+    });
+
+    it('should return undefined if no element satisfies the predicate', () => {
+      expect(list.find((x) => x > 5)).toBeUndefined();
+    });
+  });
 });
