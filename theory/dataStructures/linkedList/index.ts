@@ -25,6 +25,17 @@ export default class LinkedList<T> {
     return list;
   }
 
+  // Time: O(n); Space: O(n)
+  public toArray(): T[] {
+    const arr = [] as T[];
+
+    for (let next = this.headNode; next; next = next.next) {
+      arr.push(next.value);
+    }
+
+    return arr;
+  }
+
   // Time: O(n); Space: O(1)
   private get tailNode(): ListNode<T> | null {
     let next = this.headNode;
@@ -115,29 +126,6 @@ export default class LinkedList<T> {
     return this.atNode(position).value;
   }
 
-  // Time: O(1); Space: O(1)
-  public clear(): void {
-    this.headNode = null;
-  }
-
-  // Time: O(n); Space: O(1)
-  public reverse(): void {
-    let prev: ListNode<T> | null = null;
-    let curr = this.headNode;
-
-    while (curr) {
-      curr.next = prev;
-      prev = curr;
-      curr = curr.next;
-    }
-  }
-
-  // Same as atNode
-  public set(position: number, value: T): void {
-    const node = this.atNode(position);
-    node.value = value;
-  }
-
   // Same as atNode
   public insert(position: number, value: T): void {
     const node = new ListNode(value);
@@ -162,6 +150,12 @@ export default class LinkedList<T> {
     this.insert(0, value);
   }
 
+  // Same as atNode
+  public set(position: number, value: T): void {
+    const node = this.atNode(position);
+    node.value = value;
+  }
+
   // Time: O(1); Space: O(1)
   private removeNode(prev: ListNode<T> | null): void {
     if (!prev) this.headNode = this.headNode?.next ?? null;
@@ -177,15 +171,28 @@ export default class LinkedList<T> {
     this.removeNode(prev);
   }
 
-  // Time: O(n); Space: O(n)
-  public toArray(): T[] {
-    const arr = [] as T[];
+  // Time: O(1); Space: O(1)
+  public clear(): void {
+    this.headNode = null;
+  }
 
-    for (let next = this.headNode; next; next = next.next) {
-      arr.push(next.value);
+  // Time: O(n); Space: O(1)
+  public reverse(): void {
+    let prev: ListNode<T> | null = null;
+    let curr = this.headNode;
+
+    while (curr) {
+      curr.next = prev;
+      prev = curr;
+      curr = curr.next;
     }
+  }
 
-    return arr;
+  // Time: O(n); Space: O(1)
+  public toString(): string {
+    let string = '';
+    for (let value of this) string += `${value},`;
+    return string.slice(0, -1);
   }
 
   // Time: O(n); Space: O(1)
@@ -273,10 +280,5 @@ export default class LinkedList<T> {
     });
 
     return accumulator;
-  }
-
-  // Time: O(n); Space: O(n)
-  public toString(): string {
-    return this.toArray().join(', ');
   }
 }
