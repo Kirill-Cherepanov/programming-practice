@@ -145,4 +145,26 @@ describe('LinkedList', () => {
       expect(list.head).toBeNull();
     });
   });
+
+  describe('toArray and fromArray', () => {
+    it('should convert the linked list to an array', () => {
+      list.append(1);
+      list.append(2);
+      list.append(3);
+      expect(list.toArray()).toEqual([1, 2, 3]);
+    });
+
+    it('should create a linked list from an array', () => {
+      const listFromArray = LinkedList.fromArray([1, 2, 3]);
+      expect(listFromArray.toArray()).toEqual([1, 2, 3]);
+    });
+  });
+
+  describe('reverse', () => {
+    it('should reverse the linked list', () => {
+      list = LinkedList.fromArray([1, 2, 3, 4]);
+      list.reverse();
+      expect(list.toArray()).toEqual([4, 3, 2, 1]);
+    });
+  });
 });
