@@ -167,4 +167,43 @@ describe('LinkedList', () => {
       expect(list.toArray()).toEqual([4, 3, 2, 1]);
     });
   });
+
+  describe('map, filter, reduce, and forEach', () => {
+    beforeEach(() => {
+      list = LinkedList.fromArray([1, 2, 3, 4]);
+    });
+
+    it('should apply map correctly', () => {
+      list.map((x) => x * 2);
+      expect(list.toArray()).toEqual([2, 4, 6, 8]);
+    });
+
+    it('should apply filter correctly', () => {
+      list.filter((x) => x % 2 === 0);
+      expect(list.toArray()).toEqual([2, 4]);
+    });
+
+    it('should apply reduce correctly', () => {
+      const sum = list.reduce((acc, x) => acc + x, 0);
+      expect(sum).toBe(10);
+    });
+
+    it('should apply forEach correctly', () => {
+      const values: number[] = [];
+      list.forEach((x) => values.push(x));
+      expect(values).toEqual([1, 2, 3, 4]);
+    });
+
+    it('should handle empty lists', () => {
+      list.clear();
+      list.map((x) => x * 2);
+      list.filter((x) => x % 2 === 0);
+      const sum = list.reduce((acc, x) => acc + x, 0);
+      expect(sum).toBe(0);
+
+      const values: number[] = [];
+      list.forEach((x) => values.push(x));
+      expect(values).toEqual([]);
+    });
+  });
 });
