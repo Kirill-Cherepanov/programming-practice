@@ -18,7 +18,7 @@ export default class LinkedList<T> {
 
   // Time: O(n); Space: O(n)
   public static fromArray<T>(arr: T[]): LinkedList<T> {
-    const list = new LinkedList<T>(arr[0] ?? null);
+    const list = new LinkedList<T>();
     for (let i = arr.length - 1; i >= 0; i--) {
       list.prepend(arr[i]);
     }
@@ -92,14 +92,16 @@ export default class LinkedList<T> {
         ` negative position argument position=${position}`
       );
     }
-    if (!this.headNode) throw LinkedList.errors.getOutOfBounds(0, position);
+    if (!this.headNode) {
+      throw LinkedList.errors.getOutOfBounds(0, -position - 1);
+    }
 
     let target: ListNode<T> | null = null;
-    this.iterate((node, index) => {
-      if (index > position) target = target ? target.next : this.headNode;
+    const length = this.iterate((node, index) => {
+      if (index >= position) target = target ? target.next : this.headNode;
     });
 
-    if (!target) throw LinkedList.errors.getOutOfBounds(length, position);
+    if (!target) throw LinkedList.errors.getOutOfBounds(length, -position - 1);
     return target;
   }
 
@@ -112,7 +114,7 @@ export default class LinkedList<T> {
   // position < 0 : Time: O(n); Space: O(1)
   private atNode(position: number): ListNode<T> {
     if (position >= 0) return this.getNode(position);
-    else return this.getNodeFromEnd(-position);
+    else return this.getNodeFromEnd(-position - 1);
   }
 
   // Same as atNode
@@ -123,12 +125,14 @@ export default class LinkedList<T> {
   // Same as atNode
   public insert(position: number, value: T): void {
     const node = new ListNode(value);
+    const isFirst =
+      position === 0 || (position < 0 && this.length === -position - 1);
+    const prev = isFirst ? null : this.atNode(position - Number(position > 0));
 
-    if (position === 0) {
+    if (!prev) {
       node.next = this.headNode;
       this.headNode = node;
     } else {
-      const prev = this.atNode(position - Number(position > 0));
       node.next = prev.next;
       prev.next = node;
     }
@@ -156,12 +160,14 @@ export default class LinkedList<T> {
     else prev.next = prev.next?.next ?? null;
   }
 
-  // ! Somewhat inefficient here as it scans the list twice at this.length and this.atNode
   // Same as atNode
   public remove(position: number): void {
     const isFirst =
       position === 0 || (position < 0 && this.length === -position);
     const prev = isFirst ? null : this.atNode(position - 1);
+    if (prev && !prev.next) {
+      throw LinkedList.errors.getOutOfBounds(this.length, position);
+    }
     this.removeNode(prev);
   }
 
@@ -176,10 +182,11 @@ export default class LinkedList<T> {
     let curr = this.headNode;
 
     while (curr) {
-      curr.next = prev;
-      prev = curr;
-      curr = curr.next;
+      const next = curr.next;
+      [curr.next, prev, curr] = [prev, curr, next];
     }
+
+    this.headNode = prev;
   }
 
   // Time: O(n); Space: O(1)
@@ -190,16 +197,10 @@ export default class LinkedList<T> {
   }
 
   // Time: O(n); Space: O(1)
-  [Symbol.iterator]() {
-    let next = this.headNode;
-
-    return {
-      next() {
-        const value = next?.value ?? null;
-        next = next?.next ?? null;
-        return { value, done: !!next?.next };
-      },
-    };
+  *[Symbol.iterator]() {
+    for (let node = this.headNode; node; node = node?.next ?? null) {
+      yield node.value;
+    }
   }
 
   // Time: O(n); Space: O(1)
@@ -209,7 +210,7 @@ export default class LinkedList<T> {
       index: number,
       prev: ListNode<T> | null
     ) => void
-  ): void {
+  ): number {
     let index = 0;
     let prev: ListNode<T> | null = null;
 
@@ -218,6 +219,8 @@ export default class LinkedList<T> {
       index++;
       prev = node;
     }
+
+    return index;
   }
 
   // Time: O(n); Space: O(1)
