@@ -11,10 +11,12 @@ export default class LinkedList<T> {
     getIncorrectInput: (info?: unknown) => new Error(`Incorrect input${info}`),
   };
 
+  // Time: O(1); Space: O(1)
   constructor(headValue: T | null = null) {
     this.headNode = headValue != null ? new ListNode(headValue) : null;
   }
 
+  // Time: O(n); Space: O(n)
   public static fromArray<T>(arr: T[]): LinkedList<T> {
     const list = new LinkedList<T>(arr[0] ?? null);
     for (let i = arr.length - 1; i >= 0; i--) {
@@ -23,26 +25,31 @@ export default class LinkedList<T> {
     return list;
   }
 
+  // Time: O(n); Space: O(1)
   private get tailNode(): ListNode<T> | null {
     let next = this.headNode;
     while (next?.next) next = next.next;
     return next ?? null;
   }
 
+  // Time: O(n); Space: O(1)
   get tail(): T | null {
     return this.tailNode?.value ?? null;
   }
 
+  // Time: O(1); Space: O(1)
   get head(): T | null {
     return this.headNode?.value ?? null;
   }
 
+  // Time: O(n); Space: O(1)
   get length(): number {
     let length = 0;
     for (let next = this.headNode; next; next = next.next) length++;
     return length;
   }
 
+  // Time: O(position); Space: O(1)
   private getNode(position: number): ListNode<T> {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
@@ -62,10 +69,12 @@ export default class LinkedList<T> {
     return next;
   }
 
+  // Same as getNode
   public get(position: number): T {
     return this.getNode(position).value;
   }
 
+  // Time: O(n); Space: O(position)
   private getNodeFromEnd(position: number): ListNode<T> {
     if (position < 0) {
       throw LinkedList.errors.getIncorrectInput(
@@ -89,23 +98,29 @@ export default class LinkedList<T> {
     return arr[0];
   }
 
+  // Same as getNodeFromEnd
   public getFromEnd(position: number): T {
     return this.getNodeFromEnd(position).value;
   }
 
+  // position >= 0 : Time: O(position); Space: O(1)
+  // position < 0 : Time: O(n); Space: O(position)
   private atNode(position: number): ListNode<T> {
     if (position >= 0) return this.getNode(position);
     else return this.getNodeFromEnd(-position);
   }
 
+  // Same as atNode
   public at(position: number): T {
     return this.atNode(position).value;
   }
 
+  // Time: O(1); Space: O(1)
   public clear(): void {
     this.headNode = null;
   }
 
+  // Time: O(n); Space: O(1)
   public reverse(): void {
     let prev: ListNode<T> | null = null;
     let curr = this.headNode;
@@ -117,11 +132,13 @@ export default class LinkedList<T> {
     }
   }
 
+  // Same as atNode
   public set(position: number, value: T): void {
     const node = this.atNode(position);
     node.value = value;
   }
 
+  // Same as atNode
   public insert(position: number, value: T): void {
     const node = new ListNode(value);
 
@@ -135,20 +152,24 @@ export default class LinkedList<T> {
     }
   }
 
+  // Time: O(n); Space: O(1)
   public append(value: T): void {
     this.insert(-1, value);
   }
 
+  // Time: O(1); Space: O(1)
   public prepend(value: T): void {
     this.insert(0, value);
   }
 
-  private removeNode(prev?: ListNode<T> | null): void {
+  // Time: O(1); Space: O(1)
+  private removeNode(prev: ListNode<T> | null): void {
     if (!prev) this.headNode = this.headNode?.next ?? null;
     else prev.next = prev.next?.next ?? null;
   }
 
   // ! Somewhat inefficient here as it scans the list twice at this.length and this.atNode
+  // Same as atNode
   public remove(position: number): void {
     const isFirst =
       position === 0 || (position < 0 && this.length === -position);
@@ -156,6 +177,7 @@ export default class LinkedList<T> {
     this.removeNode(prev);
   }
 
+  // Time: O(n); Space: O(n)
   public toArray(): T[] {
     const arr = [] as T[];
 
@@ -166,6 +188,7 @@ export default class LinkedList<T> {
     return arr;
   }
 
+  // Time: O(n); Space: O(1)
   [Symbol.iterator]() {
     let next = this.headNode;
 
@@ -182,11 +205,12 @@ export default class LinkedList<T> {
     };
   }
 
+  // Time: O(n); Space: O(1)
   private iterate(
     callback: (
       node: ListNode<T>,
       index: number,
-      prev?: ListNode<T> | null
+      prev: ListNode<T> | null
     ) => void
   ): void {
     let index = 0;
@@ -199,10 +223,12 @@ export default class LinkedList<T> {
     }
   }
 
+  // Time: O(n); Space: O(1)
   public forEach(callback: (value: T, index: number) => void): void {
     this.iterate((node, index) => callback(node.value, index));
   }
 
+  // Time: O(n); Space: O(1)
   public map(callback: (value: T, index: number) => T): void {
     this.iterate((node, index) => {
       node.value = callback(node.value, index);
@@ -210,9 +236,10 @@ export default class LinkedList<T> {
   }
 
   public filter(callback: (value: T, index: number) => boolean): void {
-    this.iterate((node, index, prev) => this.removeNode(prev));
+    throw new Error('Not implemented');
   }
 
+  // Time: O(n); Space: O(1)
   public find(callback: (value: T, index: number) => boolean): T | undefined {
     let index = 0;
 
@@ -221,14 +248,17 @@ export default class LinkedList<T> {
     }
   }
 
+  // Time: O(n); Space: O(1)
   public some(callback: (value: T, index: number) => boolean): boolean {
     return !!this.find(callback);
   }
 
+  // Time: O(n); Space: O(1)
   public every(callback: (value: T, index: number) => boolean): boolean {
     return !this.find((value, index) => !callback(value, index));
   }
 
+  // Time: O(n); Space: O(1)
   public reduce(
     callback: (accumulator: T, value: T, index: number) => T,
     initialValue: T
@@ -242,6 +272,7 @@ export default class LinkedList<T> {
     return accumulator;
   }
 
+  // Time: O(n); Space: O(n)
   public toString(): string {
     return this.toArray().join(', ');
   }
