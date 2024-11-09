@@ -96,7 +96,8 @@ describe('LinkedList', () => {
     it('should append nodes to the end of the list', () => {
       list.append(1);
       list.append(2);
-      expect(list.toArray()).toEqual([1, 2]);
+      list.append(3);
+      expect(list.toArray()).toEqual([1, 2, 3]);
     });
   });
 
@@ -105,6 +106,43 @@ describe('LinkedList', () => {
       list.prepend(1);
       list.prepend(2);
       expect(list.toArray()).toEqual([2, 1]);
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove a node at a specified position', () => {
+      list.append(1);
+      list.append(2);
+      list.append(3);
+      list.remove(2);
+      list.remove(0);
+      expect(list.toArray()).toEqual([2]);
+    });
+
+    it('should remove a node at a negative position', () => {
+      list.append(1);
+      list.append(2);
+      list.append(3);
+      list.remove(-3);
+      list.remove(-1);
+      expect(list.toArray()).toEqual([2]);
+    });
+
+    it('should throw an error if the position is out of bounds', () => {
+      list.append(1);
+      expect(() => list.remove(1)).toThrow(
+        LinkedList['errors'].getOutOfBounds(1, 1)
+      );
+    });
+  });
+
+  describe('clear', () => {
+    it('should clear the entire list', () => {
+      list.append(1);
+      list.append(2);
+      list.clear();
+      expect(list.length).toBe(0);
+      expect(list.head).toBeNull();
     });
   });
 });
