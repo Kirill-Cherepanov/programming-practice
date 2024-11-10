@@ -1,4 +1,6 @@
-export default class ListNode<T> {
+import { IListNode } from '@/theory/interfaces/linked-list';
+
+export default class ListNode<T> implements IListNode<T> {
   public value: T;
   public next: ListNode<T> | null;
 

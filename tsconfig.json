@@ -5,12 +5,18 @@
     "lib": ["ES2023", "ES2023.Array", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "esModuleInterop": true,
 
     "strict": true,
     "noUnusedLocals": true,
     "noFallthroughCasesInSwitch": true,
 
-    "outDir": "./build"
+    "outDir": "./build",
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["theory", "problems"],
   "exclude": ["node_modules", "build/**/*"]

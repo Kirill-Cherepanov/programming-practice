@@ -1,3 +1,4 @@
+import { ILinkedList } from '@/theory/interfaces/linked-list';
 import LinkedList from './index';
 import ListNode from './node';
 
@@ -17,7 +18,7 @@ describe('ListNode', () => {
 });
 
 describe('LinkedList', () => {
-  let list: LinkedList<number>;
+  let list: ILinkedList<number>;
 
   beforeEach(() => {
     list = new LinkedList<number>();

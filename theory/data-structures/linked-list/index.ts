@@ -1,6 +1,9 @@
+import { ILinkedList, LinkedListStatic } from '@/theory/interfaces/linked-list';
+import { staticImplements } from '@/theory/utility/static-implements';
 import ListNode from './node';
 
-export default class LinkedList<T> {
+@staticImplements<LinkedListStatic<unknown>>()
+export default class LinkedList<T> implements ILinkedList<T> {
   private headNode: ListNode<T> | null;
 
   private static errors = {
