@@ -1,4 +1,7 @@
-import { ILinkedList, LinkedListStatic } from '@/theory/interfaces/linked-list';
+import {
+  ILinkedList,
+  LinkedListStatic,
+} from '@/theory/data-structures/interfaces/linked-list';
 import { staticImplements } from '@/theory/utility/static-implements';
 import ListNode from './node';
 

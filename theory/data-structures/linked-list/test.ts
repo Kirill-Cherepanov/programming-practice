@@ -1,4 +1,4 @@
-import { ILinkedList } from '@/theory/interfaces/linked-list';
+import { ILinkedList } from '@/theory/data-structures/interfaces/linked-list';
 import LinkedList from './index';
 import ListNode from './node';
 

@@ -1,4 +1,4 @@
-import { IListNode } from '@/theory/interfaces/linked-list';
+import { IListNode } from '@/theory/data-structures/interfaces/linked-list';
 
 export default class ListNode<T> implements IListNode<T> {
   public value: T;
